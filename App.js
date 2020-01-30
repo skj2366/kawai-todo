@@ -26,7 +26,7 @@ export default class App extends React.Component {
     this._loadToDos();
   };
   render() {
-    const { newToDo, loadedToDos } = this.state;
+    const { newToDo, loadedToDos, toDos } = this.state;
     if (!loadedToDos) {
       return <AppLoading />;
     }
@@ -44,6 +44,7 @@ export default class App extends React.Component {
             returnKeyType={"done"}
             autoCorrect={false}
             onSubmitEditing={this._addToDo}
+            underlineColorAndroid={"transparent"}
           />
           <ScrollView contentContainerStyle={styles.toDos}>
             {Object.values(toDos)
@@ -74,7 +75,7 @@ export default class App extends React.Component {
       const parsedToDos = JSON.parse(toDos);
       this.setState({
         loadedToDos: true,
-        toDos: parsedToDos
+        toDos: parsedToDos || {}
       });
     } catch (err) {
       console.log(err);

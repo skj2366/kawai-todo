@@ -51,6 +51,7 @@ class ToDo extends React.Component {
               onChangeText={this._controllInput}
               returnKeyType={"done"}
               onBlur={this._finishEditing}
+              underlineColorAndroid={"transparent"}
             />
           ) : (
             <Text
@@ -78,7 +79,12 @@ class ToDo extends React.Component {
                 <Text style={styles.actionText}>Pencil</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPressOut={() => deleteToDo(id)}>
+            <TouchableOpacity
+              onPressOut={event => {
+                event.stopPropagation;
+                deleteToDo(id);
+              }}
+            >
               <View style={styles.actionContainer}>
                 <Text style={styles.actionText}>X</Text>
               </View>
@@ -88,7 +94,8 @@ class ToDo extends React.Component {
       </View>
     );
   }
-  _toggleComplete = () => {
+  _toggleComplete = event => {
+    event.stopPropagation();
     const { isCompleted, uncompleteToDo, completeToDo, id } = this.props;
     if (!isCompleted) {
       uncompleteToDo(id);
@@ -96,12 +103,14 @@ class ToDo extends React.Component {
       completeToDo(id);
     }
   };
-  _startEditing = () => {
+  _startEditing = event => {
+    event.stopPropagation();
     this.setState({
       isEditing: true
     });
   };
-  _finishEditing = () => {
+  _finishEditing = event => {
+    event.stopPropagation();
     const { toDoValue } = this.state;
     const { id, updateToDo } = this.props;
     updateToDo(id, toDoValue);
